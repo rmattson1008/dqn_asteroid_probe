@@ -114,6 +114,9 @@ class DQN_H5(nn.Module):
         self.all_hooked_output = []
         self.hook1 = None
         self.hook2 = None
+        self.hook3 = None
+        self.hook4 = None
+        self.hook5 = None
         self.activations = OrderedDict()
 
     def forward_hook(self,layer_name):
@@ -126,6 +129,9 @@ class DQN_H5(nn.Module):
         print("Registering hooks")
         self.hook1 = self.h_layer1.register_forward_hook(self.forward_hook("h1"))
         self.hook2 = self.h_layer2.register_forward_hook(self.forward_hook("h2"))
+        self.hook3 = self.h_layer3.register_forward_hook(self.forward_hook("h3"))
+        self.hook4 = self.h_layer4.register_forward_hook(self.forward_hook("h4"))
+        self.hook5 = self.h_layer5.register_forward_hook(self.forward_hook("h5"))
 
     def get_activations(self, new_state=False):
         return self.all_hooked_output
@@ -143,6 +149,9 @@ class DQN_H5(nn.Module):
         # print(f'x shape is {x.shape} after convolutions')
         x = F.relu(self.h_layer1(x))
         x = F.relu(self.h_layer2(x))
+        x = F.relu(self.h_layer3(x))
+        x = F.relu(self.h_layer4(x))
+        x = F.relu(self.h_layer5(x))
 
         self.all_hooked_output 
         logits = self.fc(x)
