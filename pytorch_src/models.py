@@ -12,6 +12,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
+from PIL import Image
 
 
 
@@ -31,7 +32,7 @@ class DQN_H2(nn.Module):
         super(DQN_H2, self).__init__()
 
         self.cnn = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=8, stride=4),
+            nn.Conv2d(in_channels, 32, kernel_size=8, stride=4),
             nn.LeakyReLU(),
             nn.Conv2d(32, 64, kernel_size=4, stride=2),
             nn.LeakyReLU(),
@@ -65,8 +66,15 @@ class DQN_H2(nn.Module):
 
     def forward(self, x):
         # print("db. Forward Loop")
-        x = x.float() / 255
+        # x = x.float() / 255
+        # print(x.sum())
+        # print(x)
         x = x.permute((0,3,1,2))
+        # y = x[0].detach().cpu().numpy()
+        # y = np.uint8(y)
+        # print(y.shape)
+        # img = Image.fromarray(y[0])
+        # img.save("temp_image.jpg", )
         # print(f'x shape is {x.shape} at start of forward')
         x = self.cnn(x)
         # print(f'x shape is {x.shape}')
@@ -95,7 +103,7 @@ class DQN_H5(nn.Module):
         super(DQN_H5, self).__init__()
 
         self.cnn = nn.Sequential(
-            nn.Conv2d(3, 32, kernel_size=8, stride=4),
+            nn.Conv2d(in_channels, 32, kernel_size=8, stride=4),
             nn.LeakyReLU(),
             nn.Conv2d(32, 64, kernel_size=4, stride=2),
             nn.LeakyReLU(),
@@ -139,6 +147,7 @@ class DQN_H5(nn.Module):
     def forward(self, x):
         # print("db. Forward Loop")
         x = x.float() / 255
+        # Image(x).save("temp_image.jpg", )
         x = x.permute((0,3,1,2))
         # print(f'x shape is {x.shape} at start of forward')
         x = self.cnn(x)
